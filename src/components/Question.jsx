@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const Question = ({ question, correctAnswer, incorrectAnswers }) => {
+const Question = ({ question, correctAnswer, incorrectAnswers, handleSelectAnswer }) => {
   const [mappedAnswers, setMappedAnswers] = useState([]);
 
   useEffect(() => {
@@ -8,7 +8,7 @@ const Question = ({ question, correctAnswer, incorrectAnswers }) => {
       id: index + 1,
       value: answer,
     }));
-    setMappedAnswers(mappedAnswers,);
+    setMappedAnswers(mappedAnswers);
   }, [incorrectAnswers]);
 
   return (
@@ -17,7 +17,7 @@ const Question = ({ question, correctAnswer, incorrectAnswers }) => {
       <div className="d-flex justify-content-center">
           <button className="btn btn-outline-danger m-2 p-2">{correctAnswer}</button>
           {mappedAnswers.map((answer) => (
-          <button className="btn btn-outline-danger m-2 p-2" key={answer.id}>{answer.value}</button>
+          <button className="btn btn-outline-danger m-2 p-2" key={answer.id} onClick={() => handleSelectAnswer(answer.id)} >{answer.value} </button>
           ))}
       </div>
     </div>
