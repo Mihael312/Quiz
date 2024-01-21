@@ -1,4 +1,4 @@
-const Navbar = () => {
+const Nav = () => {
     return (
       <div>
         <h1 className="text-center text-danger fw-bold mt-3"> Quiz </h1>
@@ -7,5 +7,5 @@ const Navbar = () => {
     )
   }
   
-  export default Navbar
+  export default Nav
   
