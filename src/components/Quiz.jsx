@@ -13,6 +13,7 @@ const Quiz = () => {
       .then((data) => {
         data.results = data.results.map((question, index) => {
             question.id = index + 1
+            question.selected = false
             console.log(question.id)
             console.log(question.question)
             console.log(question.correct_answer)
@@ -24,6 +25,18 @@ const Quiz = () => {
       .catch((error) => console.error(error));
   }, []);
   
+
+  const handleSelectAnswer = (questionId) => {
+    const updatedQuestions = questions.map((question) => {
+      if (question.id === questionId) {
+        return { ...question, selected: true };
+      }
+      return question;
+    });
+    setQuestions(updatedQuestions);
+    console.log(questions)
+  }
+
   return (
     <div>
       {questions && questions.map((question, index) => (
@@ -31,6 +44,7 @@ const Quiz = () => {
           <Question question={he.decode(question.question)}
                     correctAnswer={he.decode(question.correct_answer)}
                     incorrectAnswers={(question.incorrect_answers)}
+                    handleSelectAnswer={handleSelectAnswer}
           />
         </div>
       ))}
