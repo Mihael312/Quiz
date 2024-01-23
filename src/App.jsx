@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Nav from './components/Nav'
 import Quiz from './components/Quiz'
 

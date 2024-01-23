@@ -1,24 +1,68 @@
 import React, { useEffect, useState } from "react";
 
-const Question = ({ question, correctAnswer, incorrectAnswers }) => {
-  const [mappedAnswers, setMappedAnswers] = useState([]);
+const Question = ({ question, correctAnswer, incorrectAnswers, onCorrectAnswer }) => {
+  const [shuffledAnswers, setShuffledAnswers] = useState([]);
+  const [correctAnswerIndex, setCorrectAnswerIndex] = useState(null);
+  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
+  const [isAnswered, setIsAnswered] = useState(false);
 
   useEffect(() => {
-    const mappedAnswers = incorrectAnswers.map((answer, index) => ({
+    // Combine correct and incorrect answers into a single array
+    const allAnswers = [correctAnswer, ...incorrectAnswers];
+
+    // Shuffle the array
+    const shuffled = allAnswers.sort(() => Math.random() - 0.5);
+
+    // Find the index of the correct answer in the shuffled array
+    const correctIndex = shuffled.findIndex((answer) => answer === correctAnswer);
+
+    // Map the shuffled answers with unique IDs
+    const mappedShuffledAnswers = shuffled.map((answer, index) => ({
       id: index + 1,
       value: answer,
     }));
-    setMappedAnswers(mappedAnswers,);
-  }, [incorrectAnswers]);
+
+    // Set the shuffled answers and correct answer index to state
+    setShuffledAnswers(mappedShuffledAnswers);
+    setCorrectAnswerIndex(correctIndex);
+  }, [correctAnswer, incorrectAnswers]);
+
+  const handleAnswerClick = (index) => {
+    // Check if the question has already been answered
+    if (isAnswered) {
+      return;
+    }
+
+    // Set the selected answer index to state
+    setSelectedAnswerIndex(index);
+
+    // Check if the selected answer is correct
+    if (index === correctAnswerIndex) {
+      // Call the callback function to update correct answer count
+      onCorrectAnswer();
+    }
+
+    // Set the question as answered
+    setIsAnswered(true);
+  };
 
   return (
-    <div  className="text-light text-center m-2">
+    <div className="text-light text-center m-2">
       <h1>{question}</h1>
       <div className="d-flex justify-content-center">
-          <button className="btn btn-outline-danger m-2 p-2">{correctAnswer}</button>
-          {mappedAnswers.map((answer) => (
-          <button className="btn btn-outline-danger m-2 p-2" key={answer.id}>{answer.value}</button>
-          ))}
+        {shuffledAnswers.map((answer, index) => (
+          <button
+            className={`m-2 p-2 btn btn-outline-danger${selectedAnswerIndex == null && "btn btn-outline-danger"}
+              ${selectedAnswerIndex !== null && index === correctAnswerIndex && "btn btn-success"}
+              ${selectedAnswerIndex !== null && index === selectedAnswerIndex && index !== correctAnswerIndex && "btn btn-danger"}`
+            }
+            key={answer.id}
+            onClick={() => handleAnswerClick(index)}
+            disabled={isAnswered} // Disable the button if the question has been answered
+          >
+            {answer.value}
+          </button>
+        ))}
       </div>
     </div>
   );
