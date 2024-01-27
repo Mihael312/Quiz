@@ -47,12 +47,12 @@ const Question = ({ question, correctAnswer, incorrectAnswers, onCorrectAnswer }
   };
 
   return (
-    <div className="text-light text-center m-2">
+    <div className=" text-light text-center m-2">
       <h1>{question}</h1>
-      <div className="d-flex justify-content-center">
+      <div className="justify-content-center flex-column d-flex flex-sm-row my-4 px-5">
         {shuffledAnswers.map((answer, index) => (
           <button
-            className={`m-2 p-2 btn btn-outline-danger${selectedAnswerIndex == null && "btn btn-outline-danger"}
+            className={`w-100 m-2 p-2 btn btn-outline-danger${selectedAnswerIndex == null && "btn btn-outline-danger"}
               ${selectedAnswerIndex !== null && index === correctAnswerIndex && "btn btn-success"}
               ${selectedAnswerIndex !== null && index === selectedAnswerIndex && index !== correctAnswerIndex && "btn btn-danger"}`
             }
